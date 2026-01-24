@@ -1,0 +1,118 @@
+===============================================
+STEP 3: ADD TASKS TO ARRAY & DISPLAY
+===============================================
+
+OBJECTIVE:
+Store multiple tasks in an array and display them on screen using .map()
+
+KEY CONCEPTS LEARNED:
+- Array state management
+- Spread operator (...) for immutability
+- .map() method for rendering lists
+- Object structure for tasks
+- Array immutability principle
+
+CODE EXAMPLE:
+--------------
+import { useState } from "react";
+
+function App() {
+  const [currentTask, setCurrentTask] = useState("");
+  
+  // Array of task objects
+  const [allTasks, setAllTasks] = useState<
+    { text: string; completed: boolean; time: Date }[]
+  >([]);
+
+  // Add new task to the array
+  function addTask() {
+    if (currentTask.trim() === "") return; // Prevent empty tasks
+    
+    setAllTasks([
+      ...allTasks,  // Keep all existing tasks
+      { 
+        text: currentTask, 
+        completed: false, 
+        time: new Date() 
+      }
+    ]);
+    
+    setCurrentTask(""); // Clear input field
+  }
+
+  return (
+    <div>
+      <input 
+        value={currentTask}
+        onChange={(e) => setCurrentTask(e.target.value)}
+      />
+      <button onClick={addTask}>Add</button>
+
+      {/* Display all tasks */}
+      {allTasks.map((task, index) => (
+        <div key={index}>
+          <p>{task.text}</p>
+          <span>{task.time.toLocaleTimeString()}</span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+UNDERSTANDING THE SPREAD OPERATOR:
+-----------------------------------
+setAllTasks([...allTasks, newTask])
+             ↑           ↑
+        Spread existing  Add new
+        
+This creates a NEW array containing:
+1. All items from allTasks (spread out)
+2. Plus the new task
+
+Why not just push()?
+- allTasks.push(newTask) modifies the original array
+- React needs a NEW array to detect changes
+- Immutability is a core React principle
+
+UNDERSTANDING .map():
+---------------------
+allTasks.map((task, index) => (
+              ↑      ↑
+           Each item  Position
+  <div key={index}>
+    <p>{task.text}</p>
+  </div>
+))
+
+.map() transforms each array item into JSX
+- Loops through every task
+- Returns JSX for each one
+- key={index} helps React track which items changed
+
+TASK OBJECT STRUCTURE:
+----------------------
+{
+  text: "Buy groceries",    // What the task says
+  completed: false,           // Is it done?
+  time: Date                  // When it was created
+}
+
+TYPE ANNOTATION:
+----------------
+useState<{ text: string; completed: boolean; time: Date }[]>([])
+         ↑                                                   ↑
+      TypeScript type definition                    Empty array initial value
+
+This tells TypeScript: "This state will be an array of objects with these properties"
+
+VALIDATION CHECK:
+-----------------
+if (currentTask.trim() === "") return;
+                ↑
+        Removes whitespace
+
+.trim() removes spaces from start/end
+- Prevents tasks like "   " (just spaces)
+- User must type actual content
+
+NEXT STEP: Add delete functionality using .filter()

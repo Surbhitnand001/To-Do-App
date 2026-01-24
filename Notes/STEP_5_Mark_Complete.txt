@@ -1,0 +1,133 @@
+===============================================
+STEP 5: MARK TASKS COMPLETE WITH CHECKBOX
+===============================================
+
+OBJECTIVE:
+Add a checkbox to toggle task completion status using .map()
+
+KEY CONCEPTS LEARNED:
+- .map() for updating specific items in an array
+- Ternary operator for conditional logic
+- Checkbox controlled components
+- Conditional CSS classes
+- Object spread with property override
+
+CODE EXAMPLE:
+--------------
+function toggleTask(index: number) {
+  setAllTasks(
+    allTasks.map((task, i) =>
+      i === index 
+        ? { ...task, completed: !task.completed }  // Toggle this one
+        : task  // Keep others unchanged
+    )
+  );
+}
+
+// In JSX:
+{allTasks.map((task, index) => (
+  <div key={index}>
+    <input
+      type="checkbox"
+      checked={task.completed}
+      onChange={() => toggleTask(index)}
+    />
+    <p className={task.completed ? "completed" : ""}>
+      {task.text}
+    </p>
+  </div>
+))}
+
+UNDERSTANDING THE TOGGLE LOGIC:
+--------------------------------
+allTasks.map((task, i) =>
+  i === index ? {...task, completed: !task.completed} : task
+)
+
+Step by step:
+1. Loop through all tasks with .map()
+2. For each task, check: Is this the one we clicked? (i === index)
+3. If YES: Create a new object with completed flipped
+4. If NO: Keep the task exactly as is
+5. Return a NEW array with the changes
+
+TERNARY OPERATOR:
+-----------------
+condition ? valueIfTrue : valueIfFalse
+
+i === index ? {...task, completed: !task.completed} : task
+    ↑              ↑                                    ↑
+Is this the    Update this task                  Keep unchanged
+target?
+
+OBJECT SPREAD WITH OVERRIDE:
+----------------------------
+{ ...task, completed: !task.completed }
+   ↑                    ↑
+Copy all          Override this property
+properties
+
+Before: { text: "Buy milk", completed: false, time: Date }
+After:  { text: "Buy milk", completed: true, time: Date }
+         ↑                    ↑
+    Unchanged              Flipped!
+
+WHY .map() NOT .filter()?
+-------------------------
+.filter() = REMOVE items
+.map() = TRANSFORM/UPDATE items (same count)
+
+We're not deleting, we're changing a property, so .map() is correct!
+
+CONTROLLED CHECKBOX:
+--------------------
+<input
+  type="checkbox"
+  checked={task.completed}      ← React controls if it's checked
+  onChange={() => toggleTask(index)}  ← User clicks → Updates state
+/>
+
+Similar to the input field from Step 2!
+- checked prop controls the checkbox state
+- onChange updates the state when clicked
+- Full circle: Click → Update state → UI reflects new state
+
+CONDITIONAL CLASS NAME:
+-----------------------
+className={task.completed ? "completed" : ""}
+           ↑               ↑             ↑
+      If true         Add this class   Add nothing
+
+This adds the "completed" CSS class when task.completed is true.
+
+In CSS:
+.completed {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+BOOLEAN NEGATION:
+-----------------
+!task.completed
+↑
+NOT operator - flips the value
+
+false → !false → true
+true  → !true  → false
+
+COMMON MISTAKE:
+---------------
+❌ WRONG:
+task.completed = !task.completed;  // Direct mutation!
+setAllTasks(allTasks);
+
+✅ RIGHT:
+setAllTasks(
+  allTasks.map((task, i) =>
+    i === index ? { ...task, completed: !task.completed } : task
+  )
+);
+
+Always create NEW arrays and objects, never modify existing ones!
+
+NEXT STEP: Add localStorage to persist tasks across page refreshes

@@ -1,0 +1,73 @@
+===============================================
+STEP 2: INPUT FIELD WITH STATE MANAGEMENT
+===============================================
+
+OBJECTIVE:
+Add an input field and manage its value using React state (useState hook).
+
+KEY CONCEPTS LEARNED:
+- useState hook - React's way of managing data that changes
+- Controlled components - input value controlled by React state
+- Event handlers (onChange, onClick)
+- State updates trigger re-renders
+
+CODE EXAMPLE:
+--------------
+import { useState } from "react";
+
+function App() {
+  // State variable to store current input text
+  const [currentTask, setCurrentTask] = useState("");
+
+  return (
+    <div className="app">
+      <h1>My To-Do List</h1>
+      
+      <input
+        type="text"
+        placeholder="Enter a new task..."
+        value={currentTask}
+        onChange={(e) => setCurrentTask(e.target.value)}
+      />
+      
+      <button onClick={() => console.log(currentTask)}>
+        Add
+      </button>
+    </div>
+  );
+}
+
+UNDERSTANDING useState:
+-----------------------
+const [currentTask, setCurrentTask] = useState("");
+       ↑              ↑                    ↑
+    Variable    Update Function    Initial Value
+
+- currentTask: The actual value (what's in the input)
+- setCurrentTask: Function to update the value
+- "": Starting value (empty string)
+
+CONTROLLED COMPONENT PATTERN:
+------------------------------
+value={currentTask}           ← React controls what's displayed
+onChange={(e) => setCurrentTask(e.target.value)}  ← User types → Updates state
+                     ↑
+             Gets the typed value
+
+This creates a "full circle":
+User types → onChange fires → setCurrentTask updates → value shows new text → Screen updates
+
+WHY THIS MATTERS:
+- React always knows what's in the input
+- You can validate, transform, or clear the input easily
+- Single source of truth (state)
+
+EVENT HANDLER SYNTAX:
+---------------------
+onChange={(e) => setCurrentTask(e.target.value)}
+         ↑      ↑                ↑
+      Event   Arrow function   The typed value
+
+The 'e' parameter is the event object. e.target is the input element.
+
+NEXT STEP: Store tasks in an array and display them

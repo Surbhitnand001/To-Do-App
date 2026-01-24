@@ -1,0 +1,40 @@
+===============================================
+STEP 1: BASIC UI STRUCTURE
+===============================================
+
+OBJECTIVE:
+Create a simple, clean UI with a heading for the To-Do List app.
+
+KEY CONCEPTS LEARNED:
+- React component structure
+- JSX syntax (writing HTML-like code in JavaScript)
+- Basic div and heading elements
+- CSS imports for styling
+
+CODE EXAMPLE:
+--------------
+import "./App.css";
+
+function App() {
+  return (
+    <div className="app">
+      <h1>My To-Do List</h1>
+    </div>
+  );
+}
+
+export default App;
+
+IMPORTANT POINTS:
+- React components are just JavaScript functions that return JSX
+- className is used instead of class (because class is a reserved keyword in JavaScript)
+- Every component must return a single parent element (the outer div)
+- The App.css file contains all the styling
+
+STYLING APPLIED:
+- Centered heading
+- Clean background
+- Proper spacing and padding
+- Professional font family
+
+NEXT STEP: Add an input field to capture user tasks

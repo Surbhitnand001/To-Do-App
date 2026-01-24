@@ -1,0 +1,88 @@
+===============================================
+STEP 4: DELETE TASKS USING .filter()
+===============================================
+
+OBJECTIVE:
+Remove specific tasks from the array using the .filter() method
+
+KEY CONCEPTS LEARNED:
+- .filter() method for removing items
+- Array immutability with filter
+- Passing parameters to onClick handlers
+- Index-based deletion
+
+CODE EXAMPLE:
+--------------
+function deleteTask(taskIndex: number) {
+  setAllTasks(allTasks.filter((task, i) => i !== taskIndex));
+}
+
+// In JSX:
+{allTasks.map((task, index) => (
+  <div key={index}>
+    <p>{task.text}</p>
+    <button onClick={() => deleteTask(index)}>Delete</button>
+  </div>
+))}
+
+UNDERSTANDING .filter():
+------------------------
+allTasks.filter((task, i) => i !== taskIndex)
+                 ↑      ↑       ↑
+              Each item Index  Condition
+
+How it works:
+1. Goes through each task
+2. Checks: Is this index NOT equal to the one we want to delete?
+3. If TRUE: Keep this task
+4. If FALSE: Remove this task
+5. Returns a NEW array with only the kept tasks
+
+EXAMPLE:
+--------
+Tasks: ["Task 1", "Task 2", "Task 3"]
+Index:     0         1         2
+
+Delete index 1:
+filter((task, i) => i !== 1)
+- i = 0: 0 !== 1? YES → Keep "Task 1"
+- i = 1: 1 !== 1? NO  → Remove "Task 2"
+- i = 2: 2 !== 1? YES → Keep "Task 3"
+
+Result: ["Task 1", "Task 3"]
+
+WHY .filter() NOT .map()?
+-------------------------
+.map() = Transform each item (keep same number of items)
+         [1, 2, 3].map(x => x * 2) → [2, 4, 6]
+
+.filter() = Remove some items (fewer items in result)
+            [1, 2, 3].filter(x => x > 1) → [2, 3]
+
+For deletion, we want FEWER items, so .filter() is correct!
+
+PASSING PARAMETERS TO onClick:
+-------------------------------
+WRONG: onClick={deleteTask(index)}
+       ↑ This calls the function immediately!
+
+RIGHT: onClick={() => deleteTask(index)}
+       ↑ This creates a function that will call deleteTask when clicked
+
+Why the arrow function?
+- onClick expects a function
+- onClick={deleteTask} passes the function (no parameters)
+- onClick={() => deleteTask(index)} creates a new function that calls deleteTask with index
+
+IMMUTABILITY REMINDER:
+----------------------
+❌ DON'T DO THIS:
+allTasks.splice(taskIndex, 1);  // Modifies original array
+setAllTasks(allTasks);
+
+✅ DO THIS:
+setAllTasks(allTasks.filter((task, i) => i !== taskIndex));  // Creates new array
+
+React only updates when it sees a NEW array, not a modified one.
+
+NEXT STEP: Add checkbox to mark tasks as complete
